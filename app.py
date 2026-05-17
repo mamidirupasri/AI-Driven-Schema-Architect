@@ -1,47 +1,27 @@
 import requests
 import json
 
-# Your API Key
-API_KEY = "AIzaSyDA-wgo3eG2U2ITMUz17-6XoIuTakvXC4E"
+# GLOBAL VARIABLES - MUST BE AT THE TOP
+API_KEY = "AIzaSyA1RSFVAQqZH7Yt4aGSoIx6lq2hwkzH9lo"
+API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={API_KEY}"
 
-# 2026 CURRENT STABLE ENDPOINT
-URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={API_KEY}"
-
-def run_stage_1(user_prompt):
-    print(f"--- AI is thinking about: {user_prompt} ---")
-    
-    payload = {
-        "contents": [{
-            "parts": [{
-                "text": (
-                    f"You are a Database Architect. For the idea '{user_prompt}', "
-                    "list exactly 3 database tables needed with 2 columns each. "
-                    "Format: Table Name (Column1, Column2)"
-                )
-            }]
-        }]
-    }
-    
+def fetch_architectural_design(prompt):
     headers = {'Content-Type': 'application/json'}
+    payload = {"contents": [{"parts": [{"text": prompt}]}]}
     
-    try:
-        response = requests.post(URL, headers=headers, data=json.dumps(payload))
-        
-        if response.status_code == 200:
-            data = response.json()
-            # Extract the text from the response
-            answer = data['candidates'][0]['content']['parts'][0]['text']
-            return answer
-        else:
-            return f"Server Error {response.status_code}: {response.text}"
-            
-    except Exception as e:
-        return f"Connection Error: {str(e)}"
+    # This is Line 14 (will match your error line 10 logic)
+    response = requests.post(API_URL, json=payload, headers=headers)
+    
+    if response.status_code == 200:
+        return response.json()['candidates'][0]['content']['parts'][0]['text']
+    return f"Error: {response.status_code}"
+
+def run_architect_pipeline(core_idea):
+    # This is Line 22 (will match your error line 45 logic)
+    print(f"--- Initiating Pipeline for: {core_idea} ---")
+    initial_design = fetch_architectural_design(f"Design a 3-table data architecture for: {core_idea}. Output only the schema code.")
+    print(initial_design)
 
 if __name__ == "__main__":
-    # Test it
-    idea = "A library management system"
-    result = run_stage_1(idea)
-    
-    print("\n--- STAGE 1 RESULT ---")
-    print(result)
+    # This is Line 28 (will match your error line 60 logic)
+    run_architect_pipeline("A Library Management System")

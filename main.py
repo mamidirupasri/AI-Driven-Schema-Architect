@@ -1,17 +1,28 @@
 import requests
 import json
 import os
+from dotenv import load_dotenv
 
 # System Configuration
-API_KEY = "AIzaSyDA-wgo3eG2U2ITMUz17-6XoIuTakvXC4E"
+API_KEY ="GEMINI_API_KEY"
 MODEL_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={API_KEY}"
 
 def fetch_architectural_design(prompt):
-    payload = {"contents": [{"parts": [{"text": prompt}]}]}
-    headers = {'Content-Type': 'application/json'}
-    response = requests.post(MODEL_URL, headers=headers, data=json.dumps(payload))
-    return response.json()['candidates'][0]['content']['parts'][0]['text']
+    response = requests.post(API_URL, json=payload, headers=headers)
+    
+    # Check if the request was successful
+    if response.status_status != 200:
+        print(f"API Error {response.status_code}: {response.text}")
+        return None
 
+    data = response.json()
+    
+    # Check if 'candidates' actually exists in the response
+    if 'candidates' in data:
+        return data['candidates'][0]['content']['parts'][0]['text']
+    else:
+        print("No candidates found. Check safety filters or prompt.")
+        return None
 def validation_repair_engine(design_text, core_idea):
     """Phase 4: Automated Verification & Repair"""
     print("--- Running Design Validation ---")
