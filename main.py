@@ -2,8 +2,14 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
+import google.generativeai as genai
 
 # System Configuration
+# PASTE YOUR GOOGLE AI STUDIO API KEY HERE TO RUN THE PIPELINE
+USER_API_KEY = "PASTE_YOUR_GEMINI_API_KEY_HERE"
+
+
+genai.configure(api_key=USER_API_KEY)
 API_KEY ="GEMINI_API_KEY"
 MODEL_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={API_KEY}"
 
